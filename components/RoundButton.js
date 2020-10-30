@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   },
   text: {
       textAlign: 'center',
-     // flex: 1,
+      //flex: 1,
       color: '#fff',//cor do texto do botão
       fontSize: 20,//tamanho da fonte
   }

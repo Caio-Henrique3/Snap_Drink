@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import Feed from '../components/Feed';
 import {auth, firestore, storage} from './../components/Firebase'; 
 import RoundButton from './../components/RoundButton';
+import * as ImagePicker from 'expo-image-picker'
 
 const options = {
   title: 'Selecione uma imagem para o perfil',
@@ -16,7 +17,7 @@ export default function Perfil({ navigation }) {
 
   const [user, setuser] = useState(null);
   const [link, setLink] = useState('https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png');
-  const [upload, setupload] = useState(null);
+  const [upload, setUpload] = useState(null);
 
   useEffect (() => {
     auth.onAuthStateChanged((usr) => {
@@ -49,9 +50,7 @@ export default function Perfil({ navigation }) {
                 <Text style={styles.texto}>@{user.username}</Text>
                 <Text style={styles.texto}>{user.nome}</Text>
                 <Text style={styles.texto}>{user.data}</Text>
-                <RoundButton title = 'Atulizar Foto Perfil' onPress={() => {
-                  console.log('apertou botão de upload de perfil')
-                }} > </RoundButton>
+                <RoundButton title = 'Atulizar Foto Perfil' onPress={() => handleSelectImages(setUpload, user)} > </RoundButton>
             </View>
         </View>
         <Feed/>
@@ -62,6 +61,49 @@ export default function Perfil({ navigation }) {
       )
   
 }
+
+async function handleSelectImages(setUpload, user) {
+
+  //inicia o "pegador" de imagens
+  const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
+
+  //permissao de acesso
+  if (status !== 'granted') {
+    alert('Eita, precisamos de acesso às suas fotos...');
+    return;
+  }
+
+  //resultado (await = esperar)
+  const result = await ImagePicker.launchImageLibraryAsync({
+    allowsEditing: true,
+    quality: 1,
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  })
+  // caso cancelou o upload
+  if (result.cancelled) {
+    return;
+  }
+
+  //teste
+  const { uri } = result;
+
+  const task = storage()
+    .ref(`/Profile/${user.uid}`)
+    .putFile(uri);
+
+  try {
+    await task;
+  } catch (e) {
+    console.error(e);
+  }
+ 
+  Alert.alert(
+    'Photo uploaded!',
+    'Your photo has been uploaded to Firebase Cloud Storage!'
+  );
+  setImage(null);
+};
+
 
 const styles = StyleSheet.create({
   container: {

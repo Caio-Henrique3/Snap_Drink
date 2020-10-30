@@ -6,8 +6,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Main from './screens/Main';
 import Registrar from './screens/Registrar';
-import Login from './screens/Login';
 import Termos from './screens/Termos';
+import Login from './screens/Login';
+import Senha from './screens/Senha';
 import Menu from './screens/Menu';
 
 const Stack = createStackNavigator();
@@ -16,11 +17,12 @@ const user = createContext (null);
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Snapdrink" component={Main} options={cabecalho('',false)}/>
         <Stack.Screen name="Registrar" component={Registrar} options={cabecalho('',false)}/>
-        <Stack.Screen name="Login" component={Login} options={cabecalho('',false)}/>
         <Stack.Screen name="Termos" component={Termos} options={cabecalho('',false)}/>
+        <Stack.Screen name="Login" component={Login} options={cabecalho('',false)}/>
+        <Stack.Screen name="Senha" component={Senha} options={cabecalho('',false)}/>
         <Stack.Screen name="Menu" component={Menu} options={cabecalho('',false)}/>
       </Stack.Navigator>
     </NavigationContainer>

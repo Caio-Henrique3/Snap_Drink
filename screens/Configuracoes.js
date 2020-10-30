@@ -4,6 +4,7 @@ import RoundButton from './../components/RoundButton';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
 
@@ -84,7 +85,7 @@ function Suporte({ navigation }) {
 function Sobre({ navigation }) {
   return (
   <View style={styles.container}>
-    <Text>A CHMSoftware apresenta neste trabalho um aplicativo formulado para a comercialização de bebidas,
+    <Text style={{fontSize:16, lineHeight: 37, maxWidth: 180}}>A CHMSoftware apresenta neste trabalho um aplicativo formulado para a comercialização de bebidas,
       onde estamos disposotos a atender do menor vendedor de um suco ao maior vendedor de uma grande fraquia
       de vinhos ou champagne. Basicamente ele atende aos interesses de obviamente quem busca vender seus produtos
       e gerar notoriedade com eles, até o usuário e comprador final das bebidas comercializadas aqui, contando com
