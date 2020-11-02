@@ -15,7 +15,6 @@ export default function Login({ navigation }) {
 
   
   function entrar( navigation) {
-    console.log(login)
     if (login === "" || senha === "") {
       return
     }
@@ -44,33 +43,14 @@ export default function Login({ navigation }) {
     navigation.navigate('Registrar')
   }
 
-/*  return (
-    <View style={styles.container}>
-      <Image></Image>
-      <Text>E-mail ou Telefone</Text>
-      <TextInput style={styles.input} onChange={event => setLogin(event.target.value)} placeholder= "caio@hotmail.com"></TextInput> 
-      <Text>Senha</Text>
-      <TextInput style={styles.input} secureTextEntry={true} onChange={event => setSenha(event.target.value)} placeholder= "********"></TextInput> 
-      <TouchableOpacity onPress={() => console.log("vai para página que escqueceu senha")}><Text>Esqueceu sua senha?</Text></TouchableOpacity>
-      <RoundButton title="Login" onPress={() => { entrar( navigation ) }}></RoundButton>
-      <Text>Ou se conecte com</Text>
-      <View style={styles.coluna}>
-      <RoundButton title="Facebook" color="#3b5998" onPress={() => {}}></RoundButton>
-      <RoundButton title="Google" color="red" onPress={() => {}}></RoundButton>
-      <RoundButton onPress={() => navigation.goBack()} title="Voltar"></RoundButton>
-      </View>
-      <Text style={{color: 'white', backgroundColor:'red', padding:3}}>{erro}</Text>
-      <StatusBar style="auto" />
-    </View>
-  ); */
   return (
     <View style={styles.container}>
       <Image></Image>
-      <Text>E-mail ou Telefone</Text>
+      <Text>E-mail</Text>
       <TextInput value={login} style={styles.input} onChangeText={text => setLogin(text)} placeholder= "caio@hotmail.com"></TextInput> 
       <Text>Senha</Text>
       <TextInput value={senha} style={styles.input} secureTextEntry={true} onChangeText={text => setSenha(text)} placeholder= "********"></TextInput> 
-      <TouchableOpacity onPress={() =>       auth.sendPasswordResetEmail(login)}><Text>Esqueceu sua senha?</Text></TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("Senha")}><Text>Esqueceu sua senha?</Text></TouchableOpacity>
       <RoundButton title="Login" onPress={() => { entrar( navigation ) }} ></RoundButton>
       <Text>Ou se conecte com</Text>
       <View style={styles.coluna}>
@@ -82,7 +62,6 @@ export default function Login({ navigation }) {
       <StatusBar style="auto" />
     </View>
   );
-
 }
 
 var styles = StyleSheet.create({

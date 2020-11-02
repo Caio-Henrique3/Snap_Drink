@@ -11,11 +11,11 @@ export default function Registrar({ navigation }) {
     const [senha, setSenha] = useState("");
     const [confirmaSenha, setConfirmaSenha] = useState("");
     const [login, setLogin] = useState("");
-    const [telefone, setTelefone] = useState("");
+    const [nome, setNome] = useState("");
     const [erro,setErro] = useState("");
 
     function registrar( navigation ) {
-        if (email === "" || senha === "") {
+        if (email == "" || senha == "") {
             return
           }
           if (email == "Teste" && senha == "Teste") {
@@ -29,8 +29,7 @@ export default function Registrar({ navigation }) {
                 firestore.collection("Usuarios").doc(dados.user.uid).set(
                   {
                     nome: nome,
-                    username: username,
-                    data: data,
+                    username: login,
                     imagem_perfil: 'https://www.xovi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png',
                   }
                 ).catch(erro => console.log(erro))
@@ -49,15 +48,15 @@ export default function Registrar({ navigation }) {
     return(
         <View style={styles.container}>
             <Text>E-mail</Text> 
-            <TextInput style={styles.input} onChange={event => setEmail(event.target.value)} placeholder= "ex: caio@hotmail.com"></TextInput> 
+            <TextInput style={styles.input} onChangeText={text => setEmail(text.toString())} placeholder= "ex: caio@hotmail.com"></TextInput> 
             <Text>Nome de usuário</Text> 
-            <TextInput style={styles.input} onChange={event => setLogin(event.target.value)} placeholder= "ex: Juca Biloba"></TextInput> 
-            <Text>Telefone</Text> 
-            <TextInput style={styles.input} onChange={event => setTelefone(event.target.value)} placeholder= "ex: (99) 9 9999 - 9999"></TextInput>
+            <TextInput style={styles.input} onChangeText={text => setLogin(text.toString())} placeholder= "ex: Juca Biloba"></TextInput> 
+            <Text>nome</Text> 
+            <TextInput style={styles.input} onChangeText={text => setNome(text.toString())} placeholder= "ex: Nome"></TextInput>
             <Text>Senha</Text>  
-            <TextInput style={styles.input} secureTextEntry={true} onChange={event => setSenha(event.target.value)} placeholder= "********"></TextInput> 
+            <TextInput style={styles.input} secureTextEntry={true} onChangeText={text => setSenha(text.toString())} placeholder= "********"></TextInput> 
             <Text>Confirme senha</Text>  
-            <TextInput style={styles.input} secureTextEntry={true} onChange={event => setConfirmaSenha(event.target.value)} placeholder= "********"></TextInput> 
+            <TextInput style={styles.input} secureTextEntry={true} onChangeText={text => setConfirmaSenha(text.toString())} placeholder= "********"></TextInput> 
             <Text style={{color: 'white', backgroundColor:'red', padding:3}}>{erro}</Text>
             <RoundButton title="Próximo" onPress={() => registrar(navigation)}></RoundButton>
             <RoundButton onPress={() => navigation.goBack()} title="Voltar"></RoundButton>

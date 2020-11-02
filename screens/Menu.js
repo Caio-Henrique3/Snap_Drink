@@ -13,12 +13,12 @@ export default function Menu({ route, navigation }) {
 
   return (
       <Tab.Navigator screenOptions={{ headerShown: false}}>
-        <Tab.Screen name="Feed" component={Feed} />
-        <Tab.Screen name="Mercado" component={Mercado} />
-        <Tab.Screen name="Perfil">
+        <Tab.Screen name="🏡" component={Feed} />
+        <Tab.Screen name="🛒" component={Mercado} />
+        <Tab.Screen name="👤">
           {() => <Perfil/>}
         </Tab.Screen>
-        <Tab.Screen name="Configuracoes" component={Configuracoes} />
+        <Tab.Screen name="🛠️" component={Configuracoes} />
       </Tab.Navigator>
   );
 }

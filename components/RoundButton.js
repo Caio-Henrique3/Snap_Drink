@@ -4,7 +4,6 @@ import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
 
 export default function RoundButton({ title, onPress, color }) {
-  console.log(title)
   if (!color===undefined)
     styles.container.color=color
   return (

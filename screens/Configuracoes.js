@@ -11,12 +11,11 @@ const Stack = createStackNavigator();
 export default function Configuracoes() {
 
   return (
-    <Stack.Navigator>
-            <Stack.Screen name="Configurações" component={({ navigation }) => {
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Configurações" component={({ navigation }) => { 
         return(
           <View style={styles.container}>
             <RoundButton title="Meus Pedidos" onPress={() => {navigation.navigate("Meus Pedidos")}}></RoundButton>
-            <RoundButton title="Editar meus Dados" onPress={() => {navigation.navigate("Editar meus Dados")}}></RoundButton>
             <RoundButton title="Criar e Editar página da Empresa" onPress={() => {navigation.navigate("Criar ou Editar perfil da Empresa")}}></RoundButton>
             <RoundButton title="Convide um amigo" onPress={() => {navigation.navigate("Convide amigos")}}></RoundButton> 
             <RoundButton title="Suporte" onPress={() => {navigation.navigate("Suporte")}}></RoundButton> 
@@ -24,14 +23,13 @@ export default function Configuracoes() {
             <RoundButton title="Deslogar Conta" onPress={() => {navigation.navigate("Sair App")}}></RoundButton>
           </View>
         )
-      }}/>
-      <Stack.Screen name="Meus Pedidos" component={Pedido}/>
-      <Stack.Screen name="Editar meus Dados" component={Dados}/>
-      <Stack.Screen name="Criar ou Editar perfil da Empresa" component={Empresa}/>
-      <Stack.Screen name="Convide amigos" component={Convidar}/>
-      <Stack.Screen name="Suporte" component={Suporte}/>
-      <Stack.Screen name="Sobre" component={Sobre}/>
-      <Stack.Screen name="Sair App" component={Sair}/>
+      }}options={cabecalho('',false)}/>
+      <Stack.Screen name="Meus Pedidos" component={Pedido} options={cabecalho('',false)}/>
+      <Stack.Screen name="Criar ou Editar perfil da Empresa" component={Empresa} options={cabecalho('',false)}/>
+      <Stack.Screen name="Convide amigos" component={Convidar} options={cabecalho('',false)}/>
+      <Stack.Screen name="Suporte" component={Suporte} options={cabecalho('',false)}/>
+      <Stack.Screen name="Sobre" component={Sobre} options={cabecalho('',false)}/>
+      <Stack.Screen name="Sair App" component={Sair} options={cabecalho('',false)}/>
     </Stack.Navigator>
   );
 }
@@ -40,14 +38,6 @@ function Pedido({ navigation }) {
   return (
   <View style={styles.container}>
     <Text>PEDIDO</Text>
-    <RoundButton title="Voltar" onPress={() => navigation.goBack()}></RoundButton>
-  </View>
-);}
-
-function Dados({ navigation }) {
-  return (
-  <View style={styles.container}>
-    <Text>EDITAR MEUS DADOS</Text>
     <RoundButton title="Voltar" onPress={() => navigation.goBack()}></RoundButton>
   </View>
 );}
@@ -82,10 +72,12 @@ function Suporte({ navigation }) {
   </View>
 );}
 
+//style={{fontSize:16, lineHeight: 37, maxWidth: 180}}
+
 function Sobre({ navigation }) {
   return (
   <View style={styles.container}>
-    <Text style={{fontSize:16, lineHeight: 37, maxWidth: 180}}>A CHMSoftware apresenta neste trabalho um aplicativo formulado para a comercialização de bebidas,
+    <Text>A CHMSoftware apresenta neste trabalho um aplicativo formulado para a comercialização de bebidas,
       onde estamos disposotos a atender do menor vendedor de um suco ao maior vendedor de uma grande fraquia
       de vinhos ou champagne. Basicamente ele atende aos interesses de obviamente quem busca vender seus produtos
       e gerar notoriedade com eles, até o usuário e comprador final das bebidas comercializadas aqui, contando com
@@ -132,3 +124,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
 }
 });
+
+function cabecalho( titulo, mostrar) {
+  let opcao = {
+    title: titulo,
+    headerStyle: {
+      backgroundColor: '#FF8C00',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      textAlign: 'left',
+      width: 'auto',
+    }
+  }
+
+  if (!mostrar) {
+    opcao.headerStyle.height = 0
+    opcao.title = ''
+  }
+
+  return opcao
+}

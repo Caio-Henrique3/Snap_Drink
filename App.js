@@ -1,5 +1,6 @@
 import React, { createContext, useContext } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Constants from 'expo-constants';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -16,7 +17,7 @@ const user = createContext (null);
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer style={{marginTop: Constants.statusBarHeight}}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Snapdrink" component={Main} options={cabecalho('',false)}/>
         <Stack.Screen name="Registrar" component={Registrar} options={cabecalho('',false)}/>
@@ -43,6 +44,7 @@ function cabecalho( titulo, mostrar) {
     title: titulo,
     headerStyle: {
       backgroundColor: '#FF8C00',
+      marginTop: Constants.statusBarHeight,
     },
     headerTintColor: '#fff',
     headerTitleStyle: {
