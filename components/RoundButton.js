@@ -3,12 +3,12 @@ import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
 
 
-export default function RoundButton({ title, onPress, color }) {
+export default function RoundButton({ title, onPress, color, width }) {
   if (!color===undefined)
     styles.container.color=color
   return (
     <TouchableOpacity
-      style={{width: '80%',
+      style={{width: (width?width:'80%'),
       backgroundColor: (color===undefined)?'#000':color, //cor de fundo do botão
       alignItems: 'center',
       justifyContent: 'center',

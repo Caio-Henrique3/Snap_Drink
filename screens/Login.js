@@ -43,21 +43,24 @@ export default function Login({ navigation }) {
     navigation.navigate('Registrar')
   }
 
-  return (
-    <View style={styles.container}>
-      <Image></Image>
-      <Text>E-mail</Text>
-      <TextInput value={login} style={styles.input} onChangeText={text => setLogin(text)} placeholder= "caio@hotmail.com"></TextInput> 
-      <Text>Senha</Text>
-      <TextInput value={senha} style={styles.input} secureTextEntry={true} onChangeText={text => setSenha(text)} placeholder= "********"></TextInput> 
-      <TouchableOpacity onPress={() => navigation.navigate("Senha")}><Text>Esqueceu sua senha?</Text></TouchableOpacity>
-      <RoundButton title="Login" onPress={() => { entrar( navigation ) }} ></RoundButton>
-      <Text>Ou se conecte com</Text>
+  /*<Text>Ou se conecte com</Text>
       <View style={styles.coluna}>
       <RoundButton title="Facebook" color="#3b5998" onPress={() => {}}></RoundButton>
       <RoundButton title="Google" color="red" onPress={() => {}}></RoundButton>
-      <RoundButton onPress={() => navigation.goBack()} title="Voltar"></RoundButton>
+      </View>*/
+
+  return (
+    <View style={styles.container}>
+      <Image></Image>
+      <Text style={styles.textT} >E-mail</Text>
+      <TextInput value={login} style={styles.input} onChangeText={text => setLogin(text)} placeholder= "caio@hotmail.com"></TextInput> 
+      <Text style={styles.textT} >Senha</Text>
+      <TextInput value={senha} style={styles.input} secureTextEntry={true} onChangeText={text => setSenha(text)} placeholder= "********"></TextInput> 
+      <View style={{flexDirection: 'row'}}>
+        <Text>Esqueceu a sua senha? </Text><TouchableOpacity onPress={() => navigation.navigate("Senha")}><Text style={{color: '#3286ed'}}>Redefinir</Text></TouchableOpacity>
       </View>
+      <RoundButton  style={styles.textT} title="Login" onPress={() => { entrar( navigation ) } } ></RoundButton>
+      <RoundButton style={styles.textT} onPress={() => navigation.goBack()} title="Voltar"></RoundButton>
       <Text style={{color: 'white', backgroundColor:'red', padding:3}}>{erro}</Text>
       <StatusBar style="auto" />
     </View>
@@ -71,6 +74,7 @@ var styles = StyleSheet.create({
     backgroundColor: '#FF8C00',
     alignItems: 'center',
     justifyContent: 'center',
+    fontFamily: 'Roboto_400Regular',
   },
   input: {
     backgroundColor: '#D3D3D3',
@@ -83,5 +87,11 @@ var styles = StyleSheet.create({
       maxWidth: '100%',
       alignItems: 'center',
       justifyContent: 'center',
-  }
+  },
+  textT: {
+    fontFamily: 'Lobster_400Regular',
+    height: 35,
+    fontSize: 24,
+    marginTop: 5,
+    },
 });

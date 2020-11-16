@@ -15,47 +15,35 @@ const options = {
 export default function Perfil({ navigation }) {
 
   const [user, setuser] = useState(null);
-  const [link, setLink] = useState('https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png');
+  const [link, setLink] = useState('https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTKRCfg2xIu9yLGDGiAXcw56FM5zjIvvCPsfQ&usqp=CAU');
   const [upload, setUpload] = useState(null);
   const [posts, setPosts] = React.useState([])
 
   useEffect (() => {
-    auth.onAuthStateChanged((usr) => {
-      if (usr) {
-        //se estiver authenticado usr é o usuário logado
-        var docRef = firestore.collection("Usuarios").doc(`${usr.uid}`);
-        storage.ref(`Profile/${usr.uid}`).getDownloadURL().then(url => setLink(url))
+    //pegar dados dod usuario
+    firestore.collection("Usuarios").doc(auth.currentUser.uid).onSnapshot(snapshot => {
+      setuser({uid:auth.currentUser.uid, ...snapshot.data()})
+      console.log(user)
+      storage.ref(`Profile/${auth.currentUser.uid}`).getDownloadURL().then(url => setLink(url))
+    })
 
-        docRef.get().then(u => {
-          console.log(u.data())
-          firestore.collection('Posts').where('uid','==', usr.uid).get()
-          .then(snapshot => {
-            if (snapshot.empty) {
-              console.log('No matching documents.');
-              return;
-            }
 
-            let lista = [] 
-
-            snapshot.forEach(doc => {
-              lista.push({id: doc.id, ...doc.data()})
-            });
-
-            console.log(lista)
-            setPosts(lista)
-          })
-          .catch(err => {
-            console.log('Error getting documents', err);
-          });
-          setuser({uid: usr.uid, ...u.data()})
-        }).catch(function(error) {
-          console.log("Error getting document:", error);
-        });
+    //atualiza os post dos usuários
+    firestore.collection('Posts').where('uid','==', auth.currentUser.uid).onSnapshot(snapshot => {
+      if (snapshot.empty) {
+        console.log('No matching documents.');
+        return;
       }
-      else {
-        //não está logado
-        setuser(null)
-      }
+
+      let lista = [] 
+
+      snapshot.forEach(doc => {
+        lista.push({id: doc.id, ...doc.data()})
+      });
+
+      lista.sort((a,b) => a.data<b.data)
+      console.log(lista)
+      setPosts(lista)
     })
   }, [])
   
@@ -63,7 +51,7 @@ export default function Perfil({ navigation }) {
   if (user) {//estiver logado
     return (
       <ScrollView style={{backgroundColor: '#FF8C00'}}>
-        <View style={styles.container}>
+        <View style={{flexDirection: "row", alignItems: "center"}}>
             <Image source={{uri: link}} style={styles.imagem}/>
             <View style={styles.detalhes}>
                 <Text style={styles.texto}>@{user.username}</Text>
@@ -72,14 +60,39 @@ export default function Perfil({ navigation }) {
                 <RoundButton title = 'Atulizar Foto Perfil' onPress={() => handleSelectImages(setUpload, user)} > </RoundButton>
             </View>
         </View>
-          {posts.map(post => {
-            return (
-              <View key={post.id} style={styles.container_post}>
-                <Image source={{uri: post.imagem}} style={{width: 400, height: 400}}></Image>
-                <Text style={styles.texto}>{post.Nome}</Text>
-                <Text style={styles.texto}>{post.Legenda}</Text>
-              </View>
-            )})}
+        {posts.map(post => {
+        return (
+          <View key={post.id} style={styles.container}>
+            <Image source={{uri:(post.imagem!=''?post.imagem:'https://media2.giphy.com/media/3oEjI6SIIHBdRxXI40/200.gif')}} style={{width: 350, height: 350}}></Image>
+            <View style={{flexDirection: 'row', justifyContent: "space-between", padding: 16}}>
+              <Text style={styles.title}>{'@'+post.Nome}</Text>
+              <Text style={styles.date}>{new Date(post.data).toLocaleDateString() + " - " + new Date(post.data).toLocaleTimeString().slice(0,5) + 'h'}</Text>
+            </View>
+            <Text style={styles.paragraph}>{post.Legenda}</Text>
+            <RoundButton title="Excluir" onPress={() => {
+              Alert.alert(
+                "Deseja remover?",
+                "Esta ação não pode ser desfeita",
+                [
+                  {
+                    text: "Cancelar",
+                    onPress: () => {},
+                    style: "cancelar"
+                  },
+                  { text: "Remover", onPress: async () => {
+                    try { await storage.ref(`/Posts/${post.id}`).delete()
+                    } catch (error) {
+                      console.log(error)
+                    }
+                    await firestore.collection(`Posts`).doc(post.id).delete()
+                    Alert.alert("Removido com sucesso!")
+                  }}
+                ],
+                { cancelable: false }
+              );
+            }}></RoundButton>
+          </View>
+      )})}
       </ScrollView>)
     } else//não está logado
       return(
@@ -153,35 +166,55 @@ export default function Perfil({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    maxHeight: '40%',
-    backgroundColor: '#FF8C00',
+    margin: 10,
+    padding: 16,
+    backgroundColor: '#f1f1f1',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row',
+    borderRadius: 12,
+  },
+  detalhes:{
+    alignItems: "center",
+    width: '60%',
   },
   imagem: {
-    flex: 0.4,
     width: 150,
-    height: 150,
+    height: 150
   },
-  detalhes: {
-    flex: 1,
-    margin: 10,
-      width:'100%',
-      alignItems: 'flex-start',
-    justifyContent: 'center',
+ image_post: {
+  width: '100%',
+ },
+ texto: {
+  fontSize: 20,
+  fontWeight: 'bold',
   },
-  texto: {
-      fontSize: 20,
-      fontWeight: 'bold',
+  title: {
+    paddingHorizontal: 12,
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
-  feed: {
-      flex: 1,
-      flexDirection: 'column',
-      backgroundColor: '#FF8C00',
-      alignItems: 'center',
-      justifyContent: 'center',
+  paragraph: {
+    margin: 24,
+    fontSize: 16,
+    fontWeight: 'normal',
+    color: "#2f2f2f",
+    textShadowColor: '#000'
   },
+  date: {
+    paddingHorizontal: 12,
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  input: {
+    backgroundColor: '#D3D3D3',
+    color: '#4F4F4F',
+    minWidth: 350,
+    marginTop: 10,
+    padding: 16,
+    borderRadius:32,  
+},
  /* image_post: {
     width: '100%',
    },
@@ -190,7 +223,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     },
     container_post: {
-      margin: 10,
+      margin: w10,
       padding: 16,
       backgroundColor: '#FF8C00',
       alignItems: 'center',

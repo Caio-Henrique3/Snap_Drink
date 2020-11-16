@@ -1,8 +1,10 @@
 import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Image, Alert } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, Image, Alert, ScrollView } from 'react-native';
 import {auth, firestore} from './../components/Firebase';
 import RoundButton from './../components/RoundButton';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 export default function Registrar({ navigation }) {
@@ -12,7 +14,30 @@ export default function Registrar({ navigation }) {
     const [confirmaSenha, setConfirmaSenha] = useState("");
     const [login, setLogin] = useState("");
     const [nome, setNome] = useState("");
+    const [data, setData] = useState("");
     const [erro,setErro] = useState("");
+  const [date, setDate] = useState(new Date(Date.now()));
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
+  const showTimepicker = () => {
+    showMode('time');
+  };
 
     function registrar( navigation ) {
         if (email == "" || senha == "") {
@@ -26,11 +51,12 @@ export default function Registrar({ navigation }) {
           //se logou com sucesso
           .then(
               dados => {
-                firestore.collection("Usuarios").doc(dados.user.uid).set(
+                firestore.collection("Usuarios").doc(auth.currentUser.uid).set(
                   {
                     nome: nome,
                     username: login,
-                    imagem_perfil: 'https://www.xovi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png',
+                    imagem_perfil: 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTKRCfg2xIu9yLGDGiAXcw56FM5zjIvvCPsfQ&usqp=CAU',
+                    data: `${date.getUTCDay()}/${date.getMonth()}/${date.getFullYear()}`,
                   }
                 ).catch(erro => console.log(erro))
                 navigation.navigate("Termos")
@@ -46,21 +72,34 @@ export default function Registrar({ navigation }) {
     }
 
     return(
+        <ScrollView style={{flex: 1, backgroundColor: '#FF8C00', paddingVertical: 40}}>
         <View style={styles.container}>
-            <Text>E-mail</Text> 
-            <TextInput style={styles.input} onChangeText={text => setEmail(text.toString())} placeholder= "ex: caio@hotmail.com"></TextInput> 
-            <Text>Nome de usuário</Text> 
-            <TextInput style={styles.input} onChangeText={text => setLogin(text.toString())} placeholder= "ex: Juca Biloba"></TextInput> 
-            <Text>nome</Text> 
-            <TextInput style={styles.input} onChangeText={text => setNome(text.toString())} placeholder= "ex: Nome"></TextInput>
-            <Text>Senha</Text>  
-            <TextInput style={styles.input} secureTextEntry={true} onChangeText={text => setSenha(text.toString())} placeholder= "********"></TextInput> 
-            <Text>Confirme senha</Text>  
-            <TextInput style={styles.input} secureTextEntry={true} onChangeText={text => setConfirmaSenha(text.toString())} placeholder= "********"></TextInput> 
+            <Text style={styles.textT} >Nome</Text> 
+            <TextInput style={styles.input} onChangeText={text => setLogin(text)} placeholder= "ex: Juca Biloba"></TextInput> 
+            <Text style={styles.textT} >E-mail</Text> 
+            <TextInput style={styles.input} onChangeText={text => setEmail(text)} placeholder= "ex: caio@hotmail.com"></TextInput> 
+            <Text style={styles.textT} >Nome de usuário</Text> 
+            <TextInput style={styles.input} onChangeText={text => setNome(text)} placeholder= "ex: Nome"></TextInput>
+            <TouchableOpacity onPress={showDatepicker}><Text style={styles.textT}>Data de Nascimento: {`${date.getUTCDay()}/${date.getMonth()}/${date.getFullYear()}`}</Text></TouchableOpacity>
+            {show && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode={mode}
+                is24Hour={true}
+                display="default"
+                onChange={onChange}
+              />
+            )}
+            <Text style={styles.textT} >Senha</Text>  
+            <TextInput style={styles.input} secureTextEntry={true} onChangeText={text => setSenha(text)} placeholder= "********"></TextInput> 
+            <Text style={styles.textT} >Confirme senha</Text>  
+            <TextInput style={styles.input} secureTextEntry={true} onChangeText={text => setConfirmaSenha(text)} placeholder= "********"></TextInput> 
             <Text style={{color: 'white', backgroundColor:'red', padding:3}}>{erro}</Text>
-            <RoundButton title="Próximo" onPress={() => registrar(navigation)}></RoundButton>
+            <RoundButton style={styles.textT} title="Próximo" onPress={() => registrar(navigation)}></RoundButton>
             <RoundButton onPress={() => navigation.goBack()} title="Voltar"></RoundButton>
         </View>
+        </ScrollView>
     )
 }
 
@@ -78,5 +117,12 @@ const styles = StyleSheet.create({
         marginTop: 10,
         padding: 16,
         borderRadius:32,  
+    },
+    textT: {
+      fontFamily: 'Lobster_400Regular',
+      height: 35,
+      fontSize: 24,
+      padding: 1,
+      marginTop: 5,
     },
 });

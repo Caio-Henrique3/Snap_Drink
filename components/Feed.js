@@ -6,14 +6,13 @@ import RoundButton from './../components/RoundButton';
 import {auth, firestore, storage} from './../components/Firebase'; 
 import * as ImagePicker from 'expo-image-picker';
 
-export default function Feed({ navigation , uid }) {
 
-  console.log(uid)
+export default function Feed({ navigation , uid }) {
 
   const [user, setuser] = React.useState(null);
   const [posts, setPosts] = React.useState([])
-  const [url, setUrl] = React.useState(null)
-  const [legenda, setLegenda] = React.useState(null)
+  const [url, setUrl] = React.useState("")
+  const [legenda, setLegenda] = React.useState("")
 
   //executa apenas uma vez
   React.useEffect(() => {
@@ -42,7 +41,7 @@ export default function Feed({ navigation , uid }) {
 
       console.log(uid)
 
-      firestore.collection('Posts').where('uid','==', uid).get()
+      firestore.collection('Posts').orderBy('data', 'desc').where('uid','==', uid).get()
       .then(snapshot => {
         if (snapshot.empty) {
           console.log('No matching documents.');
@@ -62,7 +61,7 @@ export default function Feed({ navigation , uid }) {
         console.log('Error getting documents', err);
       });
     } else {
-      firestore.collection('Posts').get()
+      firestore.collection('Posts').orderBy('data', 'desc').get()
       .then(snapshot => {
         if (snapshot.empty) {
           console.log('No matching documents.');
@@ -104,7 +103,7 @@ export default function Feed({ navigation , uid }) {
     });
   }
 
-  async function handleSelectImages() {
+  async function handleSelectImages(legenda) {
     //variavel com o post
     var postId = '';
 
@@ -112,11 +111,11 @@ export default function Feed({ navigation , uid }) {
     firestore.collection("Posts").add({
       Nome: user.nome,
       Legenda: legenda,
-      imagem: '',
-      uid: user.uid
+      uid: user.uid,
+      data: Date.now(),
     })
     .then(function(docRef) {
-      postId=docRef.id  
+      postId=docRef.id
     })
     .catch(function(error) {
         console.error("Error adding document: ", error);
@@ -157,10 +156,10 @@ export default function Feed({ navigation , uid }) {
         })
         //pega os posts da base de
         if (uid) {
-  
+
           console.log(uid)
-  
-          firestore.collection('Posts').where('uid','==', uid).get()
+          
+          firestore.collection('Posts').orderBy('data', 'desc').where('uid','==', uid).get()
           .then(snapshot => {
             if (snapshot.empty) {
               console.log('No matching documents.');
@@ -180,7 +179,7 @@ export default function Feed({ navigation , uid }) {
             console.log('Error getting documents', err);
           });
         } else {
-          firestore.collection('Posts').get()
+          firestore.collection('Posts').orderBy('data', 'desc').get()
           .then(snapshot => {
             if (snapshot.empty) {
               console.log('No matching documents.');
@@ -206,6 +205,8 @@ export default function Feed({ navigation , uid }) {
         'Post Enviado',
         'Seu post foi enviado!'
       );
+
+      setLegenda("")
     
     } catch (e) {
       console.error(e);
@@ -215,14 +216,17 @@ export default function Feed({ navigation , uid }) {
 
   return (//renderiza para aparecer na tela
     <ScrollView style={{width: '100%', height: '100%', backgroundColor: '#FF8C00',}}>
-     <TextInput style={styles.input} onChange={event => setLegenda(event.target.value)} placeholder= "Diga algo sobre o seu post..."></TextInput> 
-      <RoundButton title = 'Novo Post' onPress={() => handleSelectImages()} > </RoundButton>
+     <TextInput style={styles.input} value={legenda} onChangeText={text => setLegenda(text)} placeholder= "Diga algo sobre o seu post..."></TextInput> 
+      <RoundButton title = 'Novo Post' onPress={() => handleSelectImages(legenda)} > </RoundButton>
       {posts.map(post => {
         return (
           <View key={post.id} style={styles.container}>
-            <Image source={{uri: post.imagem}} style={{width: 400, height: 400}}></Image>
-            <Text style={styles.texto}>{post.Nome}</Text>
-            <Text style={styles.texto}>{post.Legenda}</Text>
+            <Image source={{uri:(post.imagem!=''?post.imagem:'https://media2.giphy.com/media/3oEjI6SIIHBdRxXI40/200.gif')}} style={{width: 350, height: 350}}></Image>
+            <View style={{flexDirection: 'row', justifyContent: "space-between", padding: 16}}>
+              <Text style={styles.title}>{'@'+post.Nome}</Text>
+              <Text style={styles.date}>{new Date(post.data).toLocaleDateString() + " - " + new Date(post.data).toLocaleTimeString().slice(0,5) + 'h'}</Text>
+            </View>
+            <Text style={styles.paragraph}>{post.Legenda}</Text>
           </View>
       )})}
     </ScrollView>
@@ -234,13 +238,14 @@ const styles = StyleSheet.create({
   container: {
     margin: 10,
     padding: 16,
-    backgroundColor: '#FF8C00',
+    backgroundColor: '#f1f1f1',
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 12,
   },
   imagem: {
-    width: 150,
-    height: 150,
+    width: 100,
+    height: 100,
   },
  image_post: {
   width: '100%',
@@ -248,6 +253,25 @@ const styles = StyleSheet.create({
  texto: {
   fontSize: 20,
   fontWeight: 'bold',
+  },
+  title: {
+    paddingHorizontal: 12,
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  paragraph: {
+    margin: 24,
+    fontSize: 16,
+    fontWeight: 'normal',
+    color: "#2f2f2f",
+    textShadowColor: '#000'
+  },
+  date: {
+    paddingHorizontal: 12,
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   input: {
     backgroundColor: '#D3D3D3',
