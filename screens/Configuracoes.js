@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Alert, TextInput } from 'react-native';
 import RoundButton from './../components/RoundButton';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -8,7 +8,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import { auth, firestore, storage } from './../components/Firebase'; 
 import { Venda } from './../components/Venda';
-import { TextInput } from 'react-native-paper';
 
 import * as ImagePicker from 'expo-image-picker';
 
@@ -25,7 +24,7 @@ export default function Configuracoes() {
             <RoundButton title="Anuncie seu produto" onPress={() => {navigation.navigate("Anuncie seu produto")}}></RoundButton>
             <RoundButton title="Convide um amigo" onPress={() => {navigation.navigate("Convide amigos")}}></RoundButton> 
             <RoundButton title="Suporte" onPress={() => {navigation.navigate("Suporte")}}></RoundButton> 
-            <RoundButton title="Sobre este aplicativo e nossa Empresa" onPress={() => {navigation.navigate("Sobre")}}></RoundButton>       
+            <RoundButton title="Sobre o app e Empresa" onPress={() => {navigation.navigate("Sobre")}}></RoundButton>       
             <RoundButton title="Deslogar Conta" onPress={() => {navigation.navigate("Sair App")}}></RoundButton>
           </View>
         )
@@ -171,20 +170,21 @@ function Anuncio({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
-      <Text>Novo anúncio</Text>
-      <Text>Título do anuncio</Text>    
-      <TextInput style={{ width:'100%'}} placeholder={"ex: Suco de laranja"} onChangeText={text => setTitulo(text)}></TextInput>
-      <Text>Descrição do anuncio</Text>
-      <TextInput style={{ width:'100%'}} placeholder = {"ex: Suco natural..."} onChangeText={text => setLegenda(text)}></TextInput>
-      <Text>Preço do produto</Text>
-      <TextInput style={{ width:'100%'}} placeholder = {"ex: R$ 10.00"} onChangeText={text => setPreço(text)}></TextInput>
-      <Text>Quantidade do produto</Text>
-      <TextInput style={{ width:'100%'}} placeholder = {"ex: 1000 ml"} onChangeText={text => setQuantidade(text)}></TextInput>
-      <RoundButton title="Adicionar imagens do produto" onPress={handleImagem}></RoundButton>
-      <RoundButton title="Enviar Anúncio" onPress={enviar}></RoundButton>
-      <RoundButton title="Voltar" onPress={() => navigation.goBack()}></RoundButton>
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.textT} >Título do anúncio</Text>    
+        <TextInput style={styles.input} placeholder={"ex: Suco de laranja"} onChangeText={text => setTitulo(text)}></TextInput>
+        <Text style={styles.textT} >Descrição do anúncio</Text>
+        <TextInput style={styles.input} placeholder = {"ex: Suco natural"} onChangeText={text => setLegenda(text)}></TextInput>
+        <Text style={styles.textT} >Preço do produto</Text>
+        <TextInput style={styles.input} placeholder = {"ex: 10.00"} onChangeText={text => setPreço(text)}></TextInput>
+        <Text style={styles.textT} >Quantidade do produto</Text>
+        <TextInput style={styles.input} placeholder = {"ex: 1000 ml"} onChangeText={text => setQuantidade(text)}></TextInput>
+        <RoundButton title="Adicionar imagens do produto" onPress={handleImagem}></RoundButton>
+        <RoundButton title="Enviar Anúncio" onPress={enviar}></RoundButton>
+        <RoundButton title="Voltar" onPress={() => navigation.goBack()}></RoundButton>
+      </View>
+    </ScrollView>
   );
 }
 
@@ -256,7 +256,9 @@ function Empresa({ navigation }) {
 function Convidar({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text>CONVIDE UM AMIGO</Text>
+    <Text style={styles.textT}>Para convidar um amigo para usar nosso app, basta apenas enviar a ele o link
+    <Text style={{color: '#3286ed'}}> LINK DO APP </Text>  
+      para que ele possa baixar, conhecer e começar a usar também o Snap Drink!!!</Text> 
       <RoundButton title="Voltar" onPress={() => navigation.goBack()}></RoundButton>
     </View>
   );
@@ -265,7 +267,7 @@ function Convidar({ navigation }) {
 function Suporte({ navigation }) {
   return (
   <View style={styles.container}>
-    <Text>Direcionamento de Suporte</Text>
+    <Text style={styles.textT}>Direcionamento de Suporte</Text>
     <RoundButton title="Possível problema 1" onPress={() => {}}></RoundButton>
     <RoundButton title="Possível problema 2" onPress={() => {}}></RoundButton>
     <RoundButton title="Possível problema 3" onPress={() => {}}></RoundButton>
@@ -275,8 +277,6 @@ function Suporte({ navigation }) {
     <RoundButton title="Voltar" onPress={() => navigation.goBack()}></RoundButton>
   </View>
 );}
-
-//style={{fontSize:16, lineHeight: 37, maxWidth: 180}}
 
 function Sobre({ navigation }) {
   return (
@@ -292,7 +292,7 @@ function Sobre({ navigation }) {
       Esta é o primeiro aplicativo posto para exibição da CHMSoftware, porém temos vários protópios ainda em desenvolvimento
       que buscam atender à praticidade dos usuários, que é o principal objetivo que nossa empresa busca cumprir para com 
       o desenvolvimento de seus trabalhos direcionados ao público. Ficou curioso para conhecer nossos próximos projetos?
-      Acesse nosso site e saiba muito mais sobre nossa empresa e sobre nossos trabalhos (LINK DO SITE...)
+      Acesse nosso site e saiba muito mais sobre nossa empresa e sobre nossos trabalhos <Text style={{color: '#3286ed'}}> (LINK DO SITE...) </Text> 
       E se você tem interesse em solicitar um desenvolvimento específico para sua empresa também fale conosco, nos mande
       uma mensagem no nosso WhatsApp (99) 9 9999 - 9999 ou acesse também nosso site!!!
     </Text>
@@ -300,10 +300,11 @@ function Sobre({ navigation }) {
   </View>
 );}
 
+
 function Sair({ navigation }) {
   return (
   <View style = {styles.container}>
-        <Text>Ao clicar no botão "Deslogar" você irá encerrar sua sessão de uso</Text>
+        <Text style={styles.textT} >Ao clicar no botão "Deslogar" você irá encerrar sua sessão de uso</Text>
         <View style={styles.coluna}>
           <RoundButton title="Deslogar" onPress={() => {
             auth.signOut();
@@ -321,28 +322,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    padding: 16,
-  },
-  input: {
+    padding: 20, 
+   },
+   input: {
     backgroundColor: '#D3D3D3',
     color: '#4F4F4F',
-    padding: 4,
+    minWidth: 350,
+    marginTop: 1,
+    marginBottom: 5,
+    padding: 16,
     borderRadius:32,  
-},
-  coluna: {
-    backgroundColor: '#FF8C00',
-    //flex: 1,
-    flexDirection: 'row',
-    maxWidth: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-},
-textT: {
-  fontFamily: 'Lobster_400Regular',
-  height: 'auto',
-  fontSize: 15,
-  margin: 12,
-},
+    },
+    coluna: {
+      backgroundColor: '#FF8C00',
+      //flex: 1,
+      flexDirection: 'row',
+      maxWidth: '100%',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    textT: {
+      fontFamily: 'Lobster_400Regular',
+      height: 'auto',
+      fontSize: 22,
+      padding: 12,
+    },
 });
 
 function cabecalho( titulo, mostrar) {

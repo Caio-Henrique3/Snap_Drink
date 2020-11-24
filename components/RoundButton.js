@@ -38,6 +38,6 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       //flex: 1,
       color: '#fff',//cor do texto do botão
-      fontSize: 20,//tamanho da fonte
+      fontSize: 18,//tamanho da fonte
   }
 });

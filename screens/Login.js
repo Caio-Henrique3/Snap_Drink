@@ -53,11 +53,11 @@ export default function Login({ navigation }) {
     <View style={styles.container}>
       <Image></Image>
       <Text style={styles.textT} >E-mail</Text>
-      <TextInput value={login} style={styles.input} onChangeText={text => setLogin(text)} placeholder= "caio@hotmail.com"></TextInput> 
+      <TextInput value={login} style={styles.input} onChangeText={text => setLogin(text)} placeholder= "Digite seu E-mail"></TextInput> 
       <Text style={styles.textT} >Senha</Text>
       <TextInput value={senha} style={styles.input} secureTextEntry={true} onChangeText={text => setSenha(text)} placeholder= "********"></TextInput> 
       <View style={{flexDirection: 'row'}}>
-        <Text>Esqueceu a sua senha? </Text><TouchableOpacity onPress={() => navigation.navigate("Senha")}><Text style={{color: '#3286ed'}}>Redefinir</Text></TouchableOpacity>
+        <Text>Esqueceu a sua senha? </Text><TouchableOpacity onPress={() => navigation.navigate("Senha")}><Text style={{color: '#3286ed'}}>Redefinir!</Text></TouchableOpacity>
       </View>
       <RoundButton  style={styles.textT} title="Login" onPress={() => { entrar( navigation ) } } ></RoundButton>
       <RoundButton style={styles.textT} onPress={() => navigation.goBack()} title="Voltar"></RoundButton>
@@ -81,7 +81,8 @@ var styles = StyleSheet.create({
     minWidth: 350,
     marginTop: 10,
     padding: 16,
-    borderRadius:32,  },
+    borderRadius:32,  
+  },
   coluna: {
       //flexDirection: 'row',
       maxWidth: '100%',

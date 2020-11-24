@@ -74,13 +74,18 @@ export default function Registrar({ navigation }) {
     return(
         <ScrollView style={{flex: 1, backgroundColor: '#FF8C00', paddingVertical: 40}}>
         <View style={styles.container}>
-            <Text style={styles.textT} >Nome</Text> 
-            <TextInput style={styles.input} onChangeText={text => setLogin(text)} placeholder= "ex: Juca Biloba"></TextInput> 
+            <Text style={styles.textT} >Nome e sobrenome</Text>
+            <TextInput style={styles.input} onChangeText={text => setLogin(text)} placeholder= "ex: Pedro Henrique ou Maria Eduarda"></TextInput> 
             <Text style={styles.textT} >E-mail</Text> 
-            <TextInput style={styles.input} onChangeText={text => setEmail(text)} placeholder= "ex: caio@hotmail.com"></TextInput> 
+            <TextInput style={styles.input} onChangeText={text => setEmail(text)} placeholder= "ex: pedro_henrique@hotmail.com"></TextInput> 
             <Text style={styles.textT} >Nome de usuário</Text> 
-            <TextInput style={styles.input} onChangeText={text => setNome(text)} placeholder= "ex: Nome"></TextInput>
-            <TouchableOpacity onPress={showDatepicker}><Text style={styles.textT}>Data de Nascimento: {`${date.getUTCDay()}/${date.getMonth()}/${date.getFullYear()}`}</Text></TouchableOpacity>
+            <TextInput style={styles.input} onChangeText={text => setNome(text)} placeholder= "ex: Pedro_Henrique"></TextInput>
+            <Text style={styles.textT}>Data de Nascimento:</Text>
+            <TouchableOpacity style={styles.data} onPress={showDatepicker}>
+              <Text style={{color: "#000"}}>
+                {`${date.getUTCDay()>9?date.getUTCDay():'0'+date.getUTCDay()}/${date.getMonth()>9?date.getMonth():'0'+date.getMonth()}/${date.getFullYear()}`}
+              </Text>
+            </TouchableOpacity>
             {show && (
               <DateTimePicker
                 testID="dateTimePicker"
@@ -91,7 +96,7 @@ export default function Registrar({ navigation }) {
                 onChange={onChange}
               />
             )}
-            <Text style={styles.textT} >Senha</Text>  
+            <Text style={styles.textT}>Senha</Text>  
             <TextInput style={styles.input} secureTextEntry={true} onChangeText={text => setSenha(text)} placeholder= "********"></TextInput> 
             <Text style={styles.textT} >Confirme senha</Text>  
             <TextInput style={styles.input} secureTextEntry={true} onChangeText={text => setConfirmaSenha(text)} placeholder= "********"></TextInput> 
@@ -123,6 +128,14 @@ const styles = StyleSheet.create({
       height: 35,
       fontSize: 24,
       padding: 1,
-      marginTop: 5,
+      //marginTop: 5,
     },
+    data: {
+      backgroundColor: '#D3D3D3',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: 32,
+      padding: 12,
+      margin: 6,
+    }
 });

@@ -9,7 +9,6 @@ export default function Termos({ navigation }) {
       <View style={styles.container}>
         <Text>Apresentamos os Termos</Text>
         <RoundButton title="Li e aceito todos os termos propostos" onPress={() => navigation.navigate("Login")}></RoundButton>
-        <RoundButton title="Não aceito os termos propostos" onPress={() => {}}></RoundButton>
       </View>
     )
 }

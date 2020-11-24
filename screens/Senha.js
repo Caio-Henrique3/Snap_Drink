@@ -36,8 +36,8 @@ export default function Senha ({ navigation }) {
 
     return (
       <View style={styles.container}>
-        <Text>Digite abaixo o endereço de E-mail para onde será enviado o formulário de redifinição de senha</Text>
-        <TextInput value={login} style={styles.input} onChangeText={text => setLogin(text)} placeholder= "caio@hotmail.com"></TextInput> 
+        <Text style={styles.textT}>Digite abaixo o endereço de E-mail para onde será enviado o formulário de redifinição de senha</Text>
+        <TextInput value={login} style={styles.input} onChangeText={text => setLogin(text)} placeholder= "Digite seu E-mail"></TextInput> 
         <RoundButton title="Enviar" onPress={() => {
           auth.sendPasswordResetEmail(login) 
           Alert.alert("Enviado com sucesso", "Verifique sua caixa de e-mails")
@@ -57,16 +57,23 @@ export default function Senha ({ navigation }) {
       alignItems: 'center',
       justifyContent: 'center',
     },
+    textT: {
+      fontFamily: 'Lobster_400Regular',
+      fontSize: 20,
+      padding: 12,
+      textAlign: 'center',
+    },
     input: {
         backgroundColor: '#D3D3D3',
         minWidth: 350,
         marginTop: 10,
+        marginBottom: 20,
         padding: 16,
-        borderRadius:32,  },
-      coluna: {
-          //flexDirection: 'row',
-          maxWidth: '100%',
-          alignItems: 'center',
-          justifyContent: 'center',
-      }
+        borderRadius:32,
+    },coluna: {
+        //flexDirection: 'row',
+        maxWidth: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    }
   });

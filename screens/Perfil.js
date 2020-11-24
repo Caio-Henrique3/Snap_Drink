@@ -57,7 +57,7 @@ export default function Perfil({ navigation }) {
                 <Text style={styles.texto}>@{user.username}</Text>
                 <Text style={styles.texto}>{user.nome}</Text>
                 <Text style={styles.texto}>{user.data}</Text>
-                <RoundButton title = 'Atulizar Foto Perfil' onPress={() => handleSelectImages(setUpload, user)} > </RoundButton>
+                <RoundButton title = 'Alterar Foto Perfil' onPress={() => handleSelectImages(setUpload, user)} > </RoundButton>
             </View>
         </View>
         {posts.map(post => {
@@ -66,10 +66,10 @@ export default function Perfil({ navigation }) {
             <Image source={{uri:(post.imagem!=''?post.imagem:'https://media2.giphy.com/media/3oEjI6SIIHBdRxXI40/200.gif')}} style={{width: 350, height: 350}}></Image>
             <View style={{flexDirection: 'row', justifyContent: "space-between", padding: 16}}>
               <Text style={styles.title}>{'@'+post.Nome}</Text>
-              <Text style={styles.date}>{new Date(post.data).toLocaleDateString() + " - " + new Date(post.data).toLocaleTimeString().slice(0,5) + 'h'}</Text>
+              <Text style={styles.date}>{new Date(post.data).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) + " - " + new Date(post.data).toLocaleTimeString().slice(0,5) + 'h'}</Text>
             </View>
             <Text style={styles.paragraph}>{post.Legenda}</Text>
-            <RoundButton title="Excluir" onPress={() => {
+            <RoundButton title="🗑️ Excluir" onPress={() => {
               Alert.alert(
                 "Deseja remover?",
                 "Esta ação não pode ser desfeita",
@@ -155,8 +155,8 @@ export default function Perfil({ navigation }) {
     }
   
     Alert.alert(
-      'Photo uploaded!',
-      'Your photo has been uploaded to Firebase Cloud Storage!'
+      'Foto Alterada',
+      'Sua foto foi alterada!'
     );
 
     await storage.ref(`Profile/${user.uid}`).getDownloadURL().then(url => setLink(url))

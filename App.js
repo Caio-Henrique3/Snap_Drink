@@ -6,8 +6,7 @@ import Constants from 'expo-constants';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { Lobster_400Regular, useFonts } from '@expo-google-fonts/lobster'
-//import { Roboto_400Regular, Roboto_700Bold , useFonts } from '@expo-google-fonts/roboto'
+import { Roboto_400Regular,Roboto_700Bold, Lobster_400Regular, useFonts } from '@expo-google-fonts/lobster'
 
 import Main from './screens/Main';
 import Registrar from './screens/Registrar';

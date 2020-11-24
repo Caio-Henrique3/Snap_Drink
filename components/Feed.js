@@ -41,8 +41,7 @@ export default function Feed({ navigation , uid }) {
 
       console.log(uid)
 
-      firestore.collection('Posts').orderBy('data', 'desc').where('uid','==', uid).get()
-      .then(snapshot => {
+      firestore.collection('Posts').orderBy('data', 'desc').where('uid','==', uid).onSnapshot(snapshot => {
         if (snapshot.empty) {
           console.log('No matching documents.');
           return;
@@ -57,12 +56,8 @@ export default function Feed({ navigation , uid }) {
         console.log(lista)
         setPosts(lista)
       })
-      .catch(err => {
-        console.log('Error getting documents', err);
-      });
     } else {
-      firestore.collection('Posts').orderBy('data', 'desc').get()
-      .then(snapshot => {
+      firestore.collection('Posts').orderBy('data', 'desc').onSnapshot(snapshot => {
         if (snapshot.empty) {
           console.log('No matching documents.');
           return;
@@ -77,9 +72,6 @@ export default function Feed({ navigation , uid }) {
         console.log(lista)
         setPosts(lista)
       })
-      .catch(err => {
-        console.log('Error getting documents', err);
-      });
     }
   },[])
 
@@ -224,7 +216,9 @@ export default function Feed({ navigation , uid }) {
             <Image source={{uri:(post.imagem!=''?post.imagem:'https://media2.giphy.com/media/3oEjI6SIIHBdRxXI40/200.gif')}} style={{width: 350, height: 350}}></Image>
             <View style={{flexDirection: 'row', justifyContent: "space-between", padding: 16}}>
               <Text style={styles.title}>{'@'+post.Nome}</Text>
-              <Text style={styles.date}>{new Date(post.data).toLocaleDateString() + " - " + new Date(post.data).toLocaleTimeString().slice(0,5) + 'h'}</Text>
+              <Text style={styles.date}>{
+                new Date(post.data).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) + " - " + new Date(post.data).toLocaleTimeString().slice(0,5) + 'h'
+              }</Text>
             </View>
             <Text style={styles.paragraph}>{post.Legenda}</Text>
           </View>

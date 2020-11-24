@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import {auth, firestore} from './../components/Firebase'; 
 
 import RoundButton from './../components/RoundButton';
-import image from './../assets/icon.png';
+import image from './../assets/logo.jpeg';
 
 export default function Main({ navigation }) {
 
@@ -13,10 +13,11 @@ export default function Main({ navigation }) {
       navigation.navigate("Menu");
   },[])
 
+  //<Text style={styles.titulo}>Snapdrink</Text>
+      
   return (
     <View style={styles.container}>
-      <Image source={image} style={{width: 150, height: 150}}></Image>
-      <Text style={styles.titulo}>Snapdrink</Text>
+      <Image source={image} style={{width: 150, height: 150, borderRadius: 25, marginBottom: 150}}></Image>
       <RoundButton title="Login" onPress={() => navigation.navigate("Login")}></RoundButton>
       <RoundButton title="Registrar" onPress={() => navigation.navigate("Registrar")}></RoundButton>
       <StatusBar style="auto" />

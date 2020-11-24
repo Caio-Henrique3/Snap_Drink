@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity, Alert} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { auth, firestore, storage } from './../components/Firebase'; 
+import RoundButton from './../components/RoundButton';
 
 import { Card } from 'react-native-paper';
 
@@ -48,14 +49,15 @@ export function Venda({ titulo, legenda, preco, quantidade, onComprar, remove, o
         {showComprar?<TouchableOpacity style={styles.button} onPress={onComprar}>
         <Text style={styles.buttonText}>Comprar</Text>
         </TouchableOpacity>:null}
-        {(remove?<TouchableOpacity onPress={onRemove} style={{backgroundColor: '#000', padding: 12}}><Text style={{color: "#fff"}}>🗑️ Excluir</Text></TouchableOpacity>:null)}
+        {(remove?<TouchableOpacity onPress={onRemove} style={{backgroundColor: '#000', padding: 12, borderRadius: 32, marginBottom: 32,}}><Text style={{color: "#fff"}}>🗑️ Excluir</Text></TouchableOpacity>:null)}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    width: '90%',
+    flex: 1,
+    //width: '90%',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 16,
